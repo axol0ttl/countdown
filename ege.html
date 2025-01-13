@@ -1,0 +1,106 @@
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер до ЕГЭ по профилю 2025</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Чтобы элементы располагались вертикально */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #timer {
+            font-size: 48px;
+        }
+        #timerinfa {
+            font-size: 48px;
+        }
+        
+        #timerrus {
+            font-size: 48px;
+        }
+        #header {
+            font-size: 24px;
+            margin-bottom: 20px; /* Отступ от текста до таймера */
+        }
+    </style>
+</head>
+<body>
+    <div id="header">До ЕГЭ по профильной математике 2025 осталось:</div> <!-- Текст над таймером -->
+    <div id="timer">133 дн. 15 ч. 43 мин. 46 сек.</div>
+
+    <div id="header">До ЕГЭ по русскому языку 2025 осталось:</div> <!-- Текст над таймером -->
+    <div id="timerinfa">133 дн. 15 ч. 43 мин. 46 сек.</div>
+
+    <div id="header">До ЕГЭ по информатике 2025 осталось:</div> <!-- Текст над таймером -->
+    <div id="timerrus">133 дн. 15 ч. 43 мин. 46 сек.</div>
+    <script>
+        // Установка конечной даты
+        const endDate = new Date('2025-05-27T07:00:00Z'); // 27 мая 2025 года, 10:00 по московскому времени (UTC+3)
+        const endDateinf = new Date('2025-05-30T07:00:00Z'); // 27 мая 2025 года, 10:00 по московскому времени (UTC+3)
+        const endDaterus = new Date('2025-06-10T07:00:00Z'); // 27 мая 2025 года, 10:00 по московскому времени (UTC+3)
+        
+
+        function updateTimer() {
+            const now = new Date(); // Текущее время
+            const remainingTime = endDate - now; // Разница в миллисекундах
+            const remainingTimeinfa = endDateinf - now; // Разница в миллисекундах
+            const remainingTimerus = endDaterus - now; // Разница в миллисекундах
+            
+
+            // Проверяем, истекло ли время
+            if (remainingTime < 0) {
+                document.getElementById('timer').textContent = "Время вышло!";
+                return;
+            }
+
+            // Вычисляем оставшиеся дни, часы, минуты и секунды
+            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            // Обновляем элемент таймера
+            document.getElementById('timer').textContent = days + " дн. " + hours + " ч. " + minutes + " мин. " + seconds + " сек.";
+
+            if (remainingTimeinfa < 0) {
+                document.getElementById('timerinfa').textContent = "Время вышло!";
+                return;
+            }
+
+            if (remainingTimerus < 0) {
+                document.getElementById('timerus').textContent = "Время вышло!";
+                return;
+            }
+
+            // Вычисляем оставшиеся дни, часы, минуты и секунды
+            const daysinf = Math.floor(remainingTimeinfa / (1000 * 60 * 60 * 24));
+            const hoursinf = Math.floor((remainingTimeinfa % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesinf = Math.floor((remainingTimeinfa % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsinf = Math.floor((remainingTimeinfa % (1000 * 60)) / 1000);
+
+            // Обновляем элемент таймера
+            document.getElementById('timerinfa').textContent = daysinf + " дн. " + hoursinf + " ч. " + minutesinf + " мин. " + secondsinf + " сек.";
+
+            // Вычисляем оставшиеся дни, часы, минуты и секунды
+            const daysrus = Math.floor(remainingTimerus / (1000 * 60 * 60 * 24));
+            const hoursrus = Math.floor((remainingTimerus % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesrus = Math.floor((remainingTimerus % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsrus = Math.floor((remainingTimerus % (1000 * 60)) / 1000);
+
+            // Обновляем элемент таймера
+            document.getElementById('timerrus').textContent = daysrus + " дн. " + hoursrus + " ч. " + minutesrus + " мин. " + secondsrus + " сек.";
+        }
+
+        // Первоначальное обновление
+        updateTimer();
+
+        // Запускаем обновление каждую секунду
+        setInterval(updateTimer, 1000);
+    </script>
+
+
+</body></html>
