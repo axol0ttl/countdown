@@ -69,6 +69,58 @@
             opacity: 0.8;
         }
         
+        .search-section {
+            margin-bottom: 14px;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 11px;
+            padding: 8px;
+            margin-bottom: 4px;
+            font-family: inherit;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .search-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        
+        .search-btn {
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 32px;
+        }
+        
+        .google-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+        
+        .yandex-btn {
+            background: linear-gradient(135deg, #ca8a04 0%, #eab308 100%);
+        }
+        
+        .search-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+        
         /* Специальная адаптация для Apple Watch Series 9 (396x484) */
         @media screen and (max-width: 396px) {
             body {
@@ -89,11 +141,30 @@
                 padding: 8px 3px;
                 min-height: 32px;
             }
+            
+            .search-input {
+                font-size: 10px;
+                padding: 7px;
+            }
+            
+            .search-btn {
+                font-size: 10px;
+                padding: 7px;
+                min-height: 30px;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Физика</h1>
+    
+    <div class="section search-section">
+        <input type="text" id="searchInput" class="search-input" placeholder="Поиск...">
+        <div class="search-buttons">
+            <button class="search-btn google-btn" onclick="searchGoogle()">Google</button>
+            <button class="search-btn yandex-btn" onclick="searchYandex()">Yandex</button>
+        </div>
+    </div>
     
     <div class="section">
         <div class="section-title">Кинематика</div>
@@ -153,5 +224,28 @@
             <a href="1.267.png" class="task-btn">1.267</a>
         </div>
     </div>
+    
+    <script>
+        function searchGoogle() {
+            const query = document.getElementById('searchInput').value;
+            if (query.trim()) {
+                window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+            }
+        }
+        
+        function searchYandex() {
+            const query = document.getElementById('searchInput').value;
+            if (query.trim()) {
+                window.location.href = 'https://yandex.ru/search/?text=' + encodeURIComponent(query);
+            }
+        }
+        
+        // Поиск по Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchGoogle();
+            }
+        });
+    </script>
 </body>
 </html>
