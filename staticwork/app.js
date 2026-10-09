@@ -65,7 +65,7 @@ function drawDiagram(v, options) {
   let markup = `<defs>
     <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#f29b55"/></marker>
     <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0d8b83"/></marker>
-    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8b5cf6"/></marker>
+    <marker id="arrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L7,3.5 L0,7 z" fill="#8b5cf6"/></marker>
   </defs>`;
   markup += `<path class="frame" d="M${A[0]},${A[1]} L${L[0]},${L[1]} L${D[0]},${D[1]} L${step[0]},${step[1]} L${C[0]},${C[1]} L${E[0]},${E[1]} L${supportC[0]},${supportC[1]} M${B[0]},${B[1]} L${E[0]},${E[1]}"/>`;
   const roller = (point) => `<path class="support" d="M${point[0] - 17},${point[1] + 12} L${point[0] + 17},${point[1] + 12} M${point[0] - 12},${point[1] + 12} l-5,8 M${point[0] - 4},${point[1] + 12} l-5,8 M${point[0] + 4},${point[1] + 12} l-5,8 M${point[0] + 12},${point[1] + 12} l-5,8"/><circle class="support-wheel" cx="${point[0]}" cy="${point[1] + 7}" r="5"/>`;
@@ -96,9 +96,14 @@ function drawDiagram(v, options) {
   markup += arrow(supportC[0], supportC[1] + 34, supportC[0], supportC[1] + 6, 'reaction', 'arrowTeal');
   markup += `<text class="reaction-label" x="${supportC[0] - 12}" y="${supportC[1] + 48}">Yᴄ</text>`;
   const momentArc = (cx, cy, side) => {
-    const x = cx + side * 18;
-    const sweep = side < 0 ? 1 : 0;
-    return `<path class="moment" d="M${x},${cy + 18} A18,18 0 1,${sweep} ${x},${cy - 18}" marker-end="url(#arrowPurple)"/>`;
+    const startX = cx + side * 11;
+    const endX = startX;
+    const controlX = cx + side * 37;
+    const direction = side < 0 ? 'top' : 'bottom';
+    const path = direction === 'top'
+      ? `M${startX},${cy + 21} C${controlX},${cy + 21} ${controlX},${cy - 21} ${endX},${cy - 21}`
+      : `M${startX},${cy - 21} C${controlX},${cy - 21} ${controlX},${cy + 21} ${endX},${cy + 21}`;
+    return `<path class="moment" d="${path}" marker-end="url(#arrowPurple)"/>`;
   };
   markup += momentArc(D[0], D[1], -1) + momentArc(D[0], D[1], 1);
   markup += `<text class="moment-label" x="${D[0] - 31}" y="${D[1] - 23}">M</text><text class="moment-label" x="${D[0] + 21}" y="${D[1] - 23}">M</text>`;
