@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Демонстрационная модель: Расчёт рамы</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Расчёт рамы: Вариант 3</h1>
+            <p>Интерактивная демонстрационная модель</p>
+        </header>
+        
+        <main class="main-content">
+            <section class="panel inputs-panel">
+                <h2>Параметры системы</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="F1">F₁ (кН)</label>
+                        <input type="number" id="F1" value="100" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="F2">F₂ (кН)</label>
+                        <input type="number" id="F2" value="120" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="alpha">Угол α (°)</label>
+                        <input type="number" id="alpha" value="60" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="q">Нагрузка q (кН/м)</label>
+                        <input type="number" id="q" value="25" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="M">Момент M (кН·м)</label>
+                        <input type="number" id="M" value="120" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="l1">Длина l₁ (м)</label>
+                        <input type="number" id="l1" value="6" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="l2">Длина l₂ (м)</label>
+                        <input type="number" id="l2" value="4" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="h1">Высота h₁ (м)</label>
+                        <input type="number" id="h1" value="6" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="h2">Высота h₂ (м)</label>
+                        <input type="number" id="h2" value="3" step="0.5">
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel canvas-panel">
+                <div class="canvas-container">
+                    <canvas id="frameCanvas" width="800" height="500"></canvas>
+                </div>
+            </section>
+
+            <section class="panel results-panel">
+                <h2>Результаты (Реакции опор)</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <span class="result-label">R_A (кН)</span>
+                        <span class="result-value" id="res_RA">-</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">X_E на AE (кН)</span>
+                        <span class="result-value" id="res_XE">-</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Y_E на AE (кН)</span>
+                        <span class="result-value" id="res_YE">-</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">X_H на HD (кН)</span>
+                        <span class="result-value" id="res_XH">-</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Y_H на HD (кН)</span>
+                        <span class="result-value" id="res_YH">-</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">R_D (кН)</span>
+                        <span class="result-value" id="res_RD">-</span>
+                    </div>
+                    <div class="result-card highlight">
+                        <span class="result-label">X_B (кН)</span>
+                        <span class="result-value" id="res_XB">-</span>
+                    </div>
+                    <div class="result-card highlight">
+                        <span class="result-label">Y_B (кН)</span>
+                        <span class="result-value" id="res_YB">-</span>
+                    </div>
+                    <div class="result-card highlight">
+                        <span class="result-label">M_B (кН·м)</span>
+                        <span class="result-value" id="res_MB">-</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
