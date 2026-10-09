@@ -81,8 +81,16 @@ function drawDiagram(v, options) {
   const f1y = Y(0.8 * v.h1);
   markup += arrow(X(3 * v.l1) - 70, f1y, X(3 * v.l1) - 8, f1y);
   markup += `<text class="force-label" x="${X(3 * v.l1) - 67}" y="${f1y - 10}">F₁</text>`;
-  markup += arrow(f2x + 28, f2y - 58, f2x + 1, f2y - 5);
-  markup += `<text class="force-label" x="${f2x + 22}" y="${f2y - 68}">F₂</text><text class="svg-note" x="${f2x + 39}" y="${f2y - 35}">α</text>`;
+  const angle = v.alpha * Math.PI / 180;
+  const forceLength = 62;
+  const forceStartX = f2x + forceLength * Math.cos(angle);
+  const forceStartY = f2y - forceLength * Math.sin(angle);
+  markup += arrow(forceStartX, forceStartY, f2x, f2y, 'load', 'arrowOrange');
+  const arcRadius = 24;
+  const arcEndX = f2x + arcRadius * Math.cos(angle);
+  const arcEndY = f2y - arcRadius * Math.sin(angle);
+  markup += `<path class="angle-marker" d="M${f2x + arcRadius},${f2y} A${arcRadius},${arcRadius} 0 0,0 ${arcEndX},${arcEndY}"/>`;
+  markup += `<text class="force-label" x="${forceStartX + 4}" y="${forceStartY - 7}">F₂</text><text class="svg-note" x="${f2x + 29}" y="${f2y - 10}">α</text>`;
   markup += arrow(A[0], A[1] + 35, A[0], A[1] + 5, 'reaction', 'arrowTeal');
   markup += `<text class="reaction-label" x="${A[0] - 18}" y="${A[1] + 48}">Yₐ</text>`;
   markup += arrow(supportC[0], supportC[1] + 34, supportC[0], supportC[1] + 6, 'reaction', 'arrowTeal');
@@ -129,6 +137,31 @@ function renderChecks(result) {
   $('#checksList').innerHTML = checks.map(([label, unit, value]) => `<div class="check-row"><strong>${label}</strong><span>${fmt(value, 2)} ${unit} ✓</span></div>`).join('');
 }
 
+function renderSolution(v, result) {
+  const solution = $('#solutionContent');
+  solution.innerHTML = `
+    <div class="formula-step"><strong>1. Эквивалентные силы распределённой нагрузки</strong>
+      <p>Q₁ = q · h₁ = ${fmt(v.q)} · ${fmt(v.h1)} = <b>${fmt(result.Q1)} кН</b></p>
+      <p>Q₂ = q · h₂ = ${fmt(v.q)} · ${fmt(v.h2)} = <b>${fmt(result.Q2)} кН</b></p>
+    </div>
+    <div class="formula-step"><strong>2. Разложение силы F₂</strong>
+      <p>F₂ₓ = F₂ · cos α = ${fmt(v.F2)} · cos(${fmt(v.alpha, 0)}°) = <b>${fmt(result.fx2)} кН</b></p>
+      <p>F₂ᵧ = F₂ · sin α = ${fmt(v.F2)} · sin(${fmt(v.alpha, 0)}°) = <b>${fmt(result.fy2)} кН</b></p>
+    </div>
+    <div class="formula-step"><strong>3. Реакции опор и усилия в шарнирах</strong>
+      <p>Yₐ = (Q₁ · h₁ / 2 + M) / l₁ = <b>${fmt(result.RA)} кН</b></p>
+      <p>Yᴄ = 0,4 · F₂ᵧ = <b>${fmt(result.RD)} кН</b></p>
+      <p>Xᴅ = −Q₁ = <b>${fmt(result.XD)} кН</b>, &nbsp; Yᴅ = −Yₐ = <b>${fmt(result.YD)} кН</b></p>
+      <p>Xₑ = F₂ₓ = <b>${fmt(result.XE)} кН</b>, &nbsp; Yₑ = 0,6 · F₂ᵧ = <b>${fmt(result.YE)} кН</b></p>
+    </div>
+    <div class="formula-step"><strong>4. Проверка равновесия</strong>
+      <p>ΣFₓ = <b>${fmt(result.checks.fx, 2)} кН</b></p>
+      <p>ΣFᵧ = <b>${fmt(result.checks.fy, 2)} кН</b></p>
+      <p>ΣM = <b>${fmt(result.checks.moment, 2)} кН·м</b></p>
+    </div>
+  `;
+}
+
 function update() {
   const state = readState();
   const result = calculate(state);
@@ -138,6 +171,7 @@ function update() {
   });
   renderResults(result);
   renderChecks(result);
+  renderSolution(state, result);
 }
 
 inputs.forEach((input) => {
