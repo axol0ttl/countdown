@@ -110,8 +110,13 @@ function drawDiagram(v, options) {
     if (options.values) markup += `<text class="svg-note" x="${X(0) - 58}" y="${Y(v.h1 / 2) + 15}">${fmt(v.q * v.h1)} кН</text><text class="svg-note" x="${X(2 * v.l1) - 58}" y="${Y(v.h1 + v.h2 / 2) + 15}">${fmt(v.q * v.h2)} кН</text></g>`;
     else markup += '</g>';
   }
-  markup += `<path class="dimension" d="M${A[0]},${A[1] + 55} L${D[0]},${D[1] + 55} M${D[0]},${D[1] + 55} L${C[0]},${C[1] + 55} M${C[0]},${C[1] + 55} L${E[0]},${E[1] + 55} M${E[0]},${E[1] + 55} L${supportC[0]},${supportC[1] + 55}"/>`;
-  markup += `<text class="dim-label" x="${(A[0] + D[0]) / 2 - 10}" y="${A[1] + 74}">l₁</text><text class="dim-label" x="${(E[0] + supportC[0]) / 2 - 10}" y="${supportC[1] + 74}">l₂</text><text class="dim-label" x="${A[0] - 48}" y="${(A[1] + D[1]) / 2}">h₁</text><text class="dim-label" x="${E[0] - 48}" y="${(E[1] + C[1]) / 2}">h₂</text>`;
+  const dimensionY = A[1] + 55;
+  const h1X = A[0] - 38;
+  const h2X = E[0] - 38;
+  const dimensionPoints = [A[0], D[0], C[0], E[0], supportC[0]];
+  const dimensionTicks = dimensionPoints.map((x) => `M${x},${dimensionY - 6} V${dimensionY + 6}`).join(' ');
+  markup += `<path class="dimension" d="M${A[0]},${dimensionY} H${supportC[0]} ${dimensionTicks} M${h1X},${Y(0)} V${Y(v.h1)} M${h2X},${Y(v.h1)} V${Y(v.h1 + v.h2)}"/>`;
+  markup += `<text class="dim-label" x="${(A[0] + D[0]) / 2 - 10}" y="${dimensionY - 8}">l₁</text><text class="dim-label" x="${(D[0] + C[0]) / 2 - 10}" y="${dimensionY - 8}">l₁</text><text class="dim-label" x="${(C[0] + E[0]) / 2 - 10}" y="${dimensionY - 8}">l₁</text><text class="dim-label" x="${(E[0] + supportC[0]) / 2 - 10}" y="${dimensionY - 8}">l₂</text><text class="dim-label" x="${h1X - 9}" y="${(Y(0) + Y(v.h1)) / 2}">h₁</text><text class="dim-label" x="${h2X - 9}" y="${(Y(v.h1) + Y(v.h1 + v.h2)) / 2}">h₂</text>`;
   svg.innerHTML = markup;
   svg.classList.toggle('hide-reactions', !$('#toggleReactions').checked);
   svg.classList.toggle('hide-dimensions', !$('#toggleDimensions').checked);
